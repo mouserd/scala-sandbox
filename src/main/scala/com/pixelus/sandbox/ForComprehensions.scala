@@ -14,4 +14,8 @@ class ForComprehensions {
 
     txtFiles;
   }
+
+  def mergeAllListItems (list1:List[String], list2:List[String]): List[String] = {
+    for (listItem1 <- list1; listItem2 <- list2) yield listItem1 + listItem2;
+  }
 }
