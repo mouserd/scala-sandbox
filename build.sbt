@@ -1,4 +1,4 @@
-name := "scala-commons"
+name := "scala-sandbox"
 
 version := "1.0.0"
 
