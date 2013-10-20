@@ -1,5 +1,4 @@
 ## Scala Sandbox
-=============
 
 This is a project for learning and experimenting with Scala.
 
