@@ -1,5 +1,7 @@
+# General
 *.class
 *.log
+.history
 
 # IntelliJ
 .idea/*
