@@ -16,5 +16,7 @@ classpathTypes ~= (_ + "orbit")
 
 seq(webSettings :_*)
 
+seq(ScctPlugin.instrumentSettings : _*)
+
 // Jetting settings
 port in container.Configuration := 8081
