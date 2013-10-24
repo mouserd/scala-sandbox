@@ -18,5 +18,8 @@ seq(webSettings :_*)
 
 seq(ScctPlugin.instrumentSettings : _*)
 
-// Jetting settings
+// ScalaStyle settings
+org.scalastyle.sbt.ScalastylePlugin.Settings
+
+// Jetty settings
 port in container.Configuration := 8081
