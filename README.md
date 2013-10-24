@@ -25,7 +25,7 @@ sbt> container:stop
 ```
 
 ##### Scala Code Coverage Tool (scct) - [http://mtkopone.github.io/scct/](http://mtkopone.github.io/scct/)
-* Run code coverage (outputs results to ./target/scala_2.10.3/coverage-report/index.html):
+* Run code coverage (outputs results to <code>./target/scala_2.10.3/coverage-report/index.html</code>):
 
 ```
 sbt> scct:test
@@ -44,3 +44,8 @@ sbt> scalastyle
 sbt> scalastyle-generate-config
 ```
 
+##### sbt-stats [https://github.com/orrsella/sbt-stats](https://github.com/orrsella/sbt-stats)
+* View code stats
+```
+sbt> stats
+```

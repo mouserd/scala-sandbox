@@ -15,3 +15,6 @@ addSbtPlugin("reaktor" % "sbt-scct" % "0.2-SNAPSHOT")
 
 // Scala style
 addSbtPlugin("org.scalastyle" %% "scalastyle-sbt-plugin" % "0.3.2")
+
+// Code stats
+addSbtPlugin("com.orrsella" % "sbt-stats" % "1.0.5")
