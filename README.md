@@ -2,16 +2,16 @@
 
 This is a project for learning and experimenting with Scala.
 
-#### Useful SBT commands
+#### Included SBT Plugins
 
-##### IntelliJ
+##### IntelliJ - [https://github.com/mpeltonen/sbt-idea](https://github.com/mpeltonen/sbt-idea)
 * Create Project
 
 ```
 sbt> gen-idea
 ```
 
-##### Jetty
+##### Web Plugin - [https://github.com/JamesEarlDouglas/xsbt-web-plugin](https://github.com/JamesEarlDouglas/xsbt-web-plugin)
 * Start local jetty:
 
 ```
@@ -44,7 +44,7 @@ sbt> scalastyle
 sbt> scalastyle-generate-config
 ```
 
-##### sbt-stats [https://github.com/orrsella/sbt-stats](https://github.com/orrsella/sbt-stats)
+##### sbt-stats - [https://github.com/orrsella/sbt-stats](https://github.com/orrsella/sbt-stats)
 * View code stats
 ```
 sbt> stats
