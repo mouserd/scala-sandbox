@@ -3,8 +3,8 @@ import org.apache.http.impl.client.{BasicResponseHandler, HttpClientBuilder}
 import org.apache.http.message.BasicHeader
 
 object RestClient {
-  var params:Map[String, List[String]] = _;
-  var url:String = _;
+  var params: Map[String, List[String]] = _;
+  var url: String = _;
 
   def parseArgs(args: Array[String]): Map[String, List[String]] = {
 
@@ -18,7 +18,7 @@ object RestClient {
     Map(nameValuePair("-d"), nameValuePair("-h"))
   }
 
-  def splitByEqual(nameValue:String): Array[String] = nameValue.split("=")
+  def splitByEqual(nameValue: String): Array[String] = nameValue.split("=")
 
   def headers = for (nameValue <- params("-h")) yield {
     def tokens = splitByEqual(nameValue)
@@ -28,20 +28,22 @@ object RestClient {
   def handleGetRequest = {
     val query = params("-d").mkString("&")
     val httpGet = new HttpGet(s"${url}?${query}")
-    headers.foreach { httpGet.addHeader(_) }
+    headers.foreach {
+      httpGet.addHeader(_)
+    }
 
     val responseBody = HttpClientBuilder.create().build().execute(httpGet, new BasicResponseHandler())
     println(responseBody)
   }
 
-  def main(args:Array[String]) {
-    require (args.size >= 2, "at least you should specify action[get] and url")
+  def main(args: Array[String]) {
+    require(args.size >= 2, "at least you should specify action[get] and url")
     val command = args.head
     params = parseArgs(args)
     url = args.last
 
     command match {
-      case "get"  => handleGetRequest
+      case "get" => handleGetRequest
     }
   }
 }
