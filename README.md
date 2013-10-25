@@ -49,3 +49,21 @@ sbt> scalastyle-generate-config
 ```
 sbt> stats
 ```
+
+#### REST Client
+The REST client is a simple client for transmitting RESTful calls to a locally running RESTful server.
+
+The RESTful server can be started by running <code>container:start</code> from SBT. You can then make
+GET requests to this server by running the REST client from SBT:
+* GET request:
+```
+sbt> run-main RestClient get -h Content-type=text -d refresh=true http://localhost:8081/
+```
+The <code>-d</code> argument represents request parameters that should be sent by the client to the server
+(applicable to GET requests only).
+The <code>-h</code> argument represents headers that should be sent by the client to the server.
+
+If the server is setup correctly it should echo back a response that indicates:
+ 1. the method called
+ 2. any request parameters received, and
+ 3. any headers received.
