@@ -40,7 +40,7 @@ public class RestfulServlet
       throws ServletException, IOException {
 
     PrintWriter out = resp.getWriter();
-    out.println("POST method called");
+    out.println("PUT method called");
     out.println("Parameters: " + parameters(req));
     out.println("Headers: " + headers(req));
   }
