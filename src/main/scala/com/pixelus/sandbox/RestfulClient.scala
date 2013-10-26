@@ -8,43 +8,6 @@ object RESTfulClient {
   var params: Map[String, List[String]] = _;
   var url: String = _;
 
-  def parseArgs(args: Array[String]): Map[String, List[String]] = {
-
-    def nameValuePair(paramName: String) = {
-      def values(commaSeparatedValues: String) = commaSeparatedValues.split(",").toList
-
-      val index = args.indexWhere(_ == paramName)
-      (paramName, if (index == -1) Nil else values(args(index + 1)))
-    }
-
-    Map(nameValuePair("-d"), nameValuePair("-h"))
-  }
-
-  def splitByEqual(nameValue: String): Array[String] = nameValue.split("=")
-
-  def headers = for (nameValue <- params("-h")) yield {
-    def tokens = splitByEqual(nameValue)
-    new BasicHeader(tokens(0), tokens(1))
-  }
-
-  def formEntity = {
-    def toJavaList(scalaList: List[BasicNameValuePair]) = {
-      java.util.Arrays.asList(scalaList.toArray:_*)
-    }
-
-    def formParams = for (nameValue <- params("-d")) yield {
-      def tokens = splitByEqual(nameValue)
-      new BasicNameValuePair(tokens(0), tokens(1))
-    }
-
-    def formEntity = new UrlEncodedFormEntity(toJavaList(formParams), "UTF-8")
-    formEntity
-  }
-
-  private def createHttpClient: HttpClient = {
-    HttpClientBuilder.create().build()
-  }
-
   def handleGetRequest = {
     val query = params("-d").mkString("&")
     val httpGet = new HttpGet(s"${url}?${query}")
@@ -91,6 +54,44 @@ object RESTfulClient {
     println(httpOptions.getAllowedMethods(response))
   }
 
+  private def createHttpClient: HttpClient = {
+    HttpClientBuilder.create().build()
+  }
+
+  private def headers = for (nameValue <- params("-h")) yield {
+    def tokens = splitByEqual(nameValue)
+    new BasicHeader(tokens(0), tokens(1))
+  }
+
+  private def formEntity = {
+    def toJavaList(scalaList: List[BasicNameValuePair]) = {
+      java.util.Arrays.asList(scalaList.toArray: _*)
+    }
+
+    def formParams = for (nameValue <- params("-d")) yield {
+      def tokens = splitByEqual(nameValue)
+      new BasicNameValuePair(tokens(0), tokens(1))
+    }
+
+    def formEntity = new UrlEncodedFormEntity(toJavaList(formParams), "UTF-8")
+    formEntity
+  }
+
+  private def splitByEqual(nameValue: String): Array[String] = nameValue.split("=")
+
+  private def parseArgs(args: Array[String]): Map[String, List[String]] = {
+
+    def nameValuePair(paramName: String) = {
+      def values(commaSeparatedValues: String) = commaSeparatedValues.split(",").toList
+
+      val index = args.indexWhere(_ == paramName)
+      (paramName, if (index == -1) Nil else values(args(index + 1)))
+    }
+
+    Map(nameValuePair("-d"), nameValuePair("-h"))
+  }
+
+
   def main(args: Array[String]) {
     require(args.size >= 2, "should at least specify an action[get,put,post,delete,options] and url")
     val command = args.head
@@ -98,11 +99,11 @@ object RESTfulClient {
     url = args.last
 
     command match {
-      case "get"    => handleGetRequest
-      case "put"    => handlePutRequest
-      case "post"   => handlePostRequest
-      case "delete" => handleDeleteRequest
-      case "options"=> handleOptionsRequest
+      case "get"     => handleGetRequest
+      case "put"     => handlePutRequest
+      case "post"    => handlePostRequest
+      case "delete"  => handleDeleteRequest
+      case "options" => handleOptionsRequest
     }
   }
 }
