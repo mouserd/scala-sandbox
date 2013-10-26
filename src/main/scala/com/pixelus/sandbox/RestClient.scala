@@ -1,5 +1,5 @@
 import org.apache.http.client.entity.UrlEncodedFormEntity
-import org.apache.http.client.methods.{HttpPost, HttpGet}
+import org.apache.http.client.methods.{HttpDelete, HttpPost, HttpGet}
 import org.apache.http.impl.client.{BasicResponseHandler, HttpClientBuilder}
 import org.apache.http.message.{BasicNameValuePair, BasicHeader}
 
@@ -61,15 +61,22 @@ object RestClient {
     println(responseBody)
   }
 
+  def handleDeleteRequest = {
+    val httpDelete = new HttpDelete(url);
+    val responseBody = HttpClientBuilder.create().build().execute(httpDelete, new BasicResponseHandler)
+    println(responseBody)
+  }
+
   def main(args: Array[String]) {
-    require(args.size >= 2, "at least you should specify action[get,post] and url")
+    require(args.size >= 2, "at least you should specify action[get,post,delete] and url")
     val command = args.head
     params = parseArgs(args)
     url = args.last
 
     command match {
-      case "get"  => handleGetRequest
-      case "post" => handlePostRequest
+      case "get"    => handleGetRequest
+      case "post"   => handlePostRequest
+      case "delete" => handleDeleteRequest
     }
   }
 }
