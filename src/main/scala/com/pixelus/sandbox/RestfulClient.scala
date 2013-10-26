@@ -4,7 +4,7 @@ import org.apache.http.client.methods._
 import org.apache.http.impl.client.{BasicResponseHandler, HttpClientBuilder}
 import org.apache.http.message.{BasicNameValuePair, BasicHeader}
 
-object RestClient {
+object RESTfulClient {
   var params: Map[String, List[String]] = _;
   var url: String = _;
 
@@ -52,33 +52,8 @@ object RestClient {
       httpGet.addHeader(_)
     }
 
-    val responseBody = createHttpClient.execute(httpGet, new BasicResponseHandler())
+    val responseBody = createHttpClient.execute(httpGet, new BasicResponseHandler)
     println(responseBody)
-  }
-
-  def handlePostRequest = {
-    val httpPost = new HttpPost(url);
-    headers.foreach {
-      httpPost.addHeader(_)
-    }
-    httpPost.setEntity(formEntity)
-    val responseBody = createHttpClient.execute(httpPost, new BasicResponseHandler())
-    println(responseBody)
-  }
-
-  def handleDeleteRequest = {
-    val httpDelete = new HttpDelete(url);
-    val response = createHttpClient.execute(httpDelete)
-    println(response.getStatusLine)
-  }
-
-  def handleOptionsRequest = {
-    val httpOptions = new HttpOptions(url);
-    headers.foreach {
-      httpOptions.addHeader(_)
-    }
-    val response = createHttpClient.execute(httpOptions)
-    println(httpOptions.getAllowedMethods(response))
   }
 
   def handlePutRequest = {
@@ -89,6 +64,31 @@ object RestClient {
     httpPut.setEntity(formEntity)
     val responseBody = createHttpClient.execute(httpPut, new BasicResponseHandler)
     println(responseBody)
+  }
+
+  def handlePostRequest = {
+    val httpPost = new HttpPost(url)
+    headers.foreach {
+      httpPost.addHeader(_)
+    }
+    httpPost.setEntity(formEntity)
+    val responseBody = createHttpClient.execute(httpPost, new BasicResponseHandler)
+    println(responseBody)
+  }
+
+  def handleDeleteRequest = {
+    val httpDelete = new HttpDelete(url)
+    val response = createHttpClient.execute(httpDelete)
+    println(response.getStatusLine)
+  }
+
+  def handleOptionsRequest = {
+    val httpOptions = new HttpOptions(url)
+    headers.foreach {
+      httpOptions.addHeader(_)
+    }
+    val response = createHttpClient.execute(httpOptions)
+    println(httpOptions.getAllowedMethods(response))
   }
 
   def main(args: Array[String]) {

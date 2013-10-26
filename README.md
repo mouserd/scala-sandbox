@@ -50,8 +50,8 @@ sbt> scalastyle-generate-config
 sbt> stats
 ```
 
-#### REST Client
-The REST client is a simple client for transmitting RESTful calls to a locally running RESTful server.
+#### RESTful Client
+The RESTful client is a simple client for transmitting RESTful calls to a locally running RESTful server.
 
 The RESTful server can be started by running <code>container:start</code> from SBT. You can then make
 GET/PUT/POST/DELETE/OPTIONS requests to this server by running the REST client from SBT:
@@ -62,24 +62,24 @@ multiple parameters or headers by comma-separating them.
 
 * GET request:
 ```
-sbt> run-main RestClient get -h Request-Originator=RestfulClient -d refresh=true http://localhost:8081/
+sbt> run-main RESTfulClient get -h Request-Originator=RESTfulClient -d refresh=true http://localhost:8081/
 ```
 * PUT request:
 ```
-sbt> run-main RestClient put -h Request-Originator=RestfulClient -d id=1,name=Dave http://localhost:8081/
+sbt> run-main RESTfulClient put -h Request-Originator=RESTfulClient -d id=1,name=Dave http://localhost:8081/
 ```
 
 * POST request:
 ```
-sbt> run-main RestClient post -h Request-Originator=RestfulClient -d id=1,name=Dave http://localhost:8081/
+sbt> run-main RESTfulClient post -h Request-Originator=RESTfulClient -d id=1,name=Dave http://localhost:8081/
 ```
 * DELETE request:
 ```
-sbt> run-main RestClient delete http://localhost:8081/
+sbt> run-main RESTfulClient delete http://localhost:8081/
 ```
 * OPTIONS request:
 ```
-sbt> run-main RestClient options -h Request-Originator=RestfulClient http://localhost:8081/
+sbt> run-main RESTfulClient options -h Request-Originator=RESTfulClient http://localhost:8081/
 ```
 
 If the server is setup correctly it should echo back a response that indicates:

@@ -4,13 +4,13 @@
 
     <!-- Declare the existence of a servlet. -->
     <servlet>
-        <servlet-name>RestfulServlet</servlet-name>
-        <servlet-class>com.pixelus.servlet.RestfulServlet</servlet-class>
+        <servlet-name>RESTfulServlet</servlet-name>
+        <servlet-class>com.pixelus.servlet.RESTfulServlet</servlet-class>
     </servlet>
 
     <!-- Map URLs to that servlet. -->
     <servlet-mapping>
-        <servlet-name>RestfulServlet</servlet-name>
+        <servlet-name>RESTfulServlet</servlet-name>
         <url-pattern>/</url-pattern>
     </servlet-mapping>
 </web-app>
