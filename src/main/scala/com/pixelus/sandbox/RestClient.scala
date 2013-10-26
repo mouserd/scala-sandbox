@@ -1,6 +1,6 @@
 import org.apache.http.client.entity.UrlEncodedFormEntity
 import org.apache.http.client.HttpClient
-import org.apache.http.client.methods.{HttpDelete, HttpPost, HttpGet}
+import org.apache.http.client.methods.{HttpOptions, HttpDelete, HttpPost, HttpGet}
 import org.apache.http.impl.client.{BasicResponseHandler, HttpClientBuilder}
 import org.apache.http.message.{BasicNameValuePair, BasicHeader}
 
@@ -68,8 +68,17 @@ object RestClient {
 
   def handleDeleteRequest = {
     val httpDelete = new HttpDelete(url);
-    val response = HttpClientBuilder.create().build().execute(httpDelete)
+    val response = createHttpClient.execute(httpDelete)
     println(response.getStatusLine)
+  }
+
+  def handleOptionsRequest = {
+    val httpOptions = new HttpOptions(url);
+    headers.foreach {
+      httpOptions.addHeader(_)
+    }
+    val response = createHttpClient.execute(httpOptions)
+    println(httpOptions.getAllowedMethods(response))
   }
 
   def main(args: Array[String]) {
@@ -82,6 +91,7 @@ object RestClient {
       case "get"    => handleGetRequest
       case "post"   => handlePostRequest
       case "delete" => handleDeleteRequest
+      case "options"=> handleOptionsRequest
     }
   }
 }
