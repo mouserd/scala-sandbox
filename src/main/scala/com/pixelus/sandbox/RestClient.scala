@@ -68,12 +68,12 @@ object RestClient {
 
   def handleDeleteRequest = {
     val httpDelete = new HttpDelete(url);
-    val responseBody = createHttpClient.execute(httpDelete, new BasicResponseHandler)
-    println(responseBody)
+    val response = HttpClientBuilder.create().build().execute(httpDelete)
+    println(response.getStatusLine)
   }
 
   def main(args: Array[String]) {
-    require(args.size >= 2, "at least you should specify action[get,post,delete] and url")
+    require(args.size >= 2, "should at least specify an action[get,post,delete] and url")
     val command = args.head
     params = parseArgs(args)
     url = args.last
