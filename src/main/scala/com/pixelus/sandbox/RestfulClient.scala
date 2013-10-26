@@ -5,11 +5,14 @@ import org.apache.http.impl.client.{BasicResponseHandler, HttpClientBuilder}
 import org.apache.http.message.{BasicNameValuePair, BasicHeader}
 
 object RESTfulClient {
+  val Arg_Data_Key = "-d"
+  val Arg_Header_Key = "-h"
+
   var params: Map[String, List[String]] = _;
   var url: String = _;
 
   def handleGetRequest = {
-    val query = params("-d").mkString("&")
+    val query = params(Arg_Data_Key).mkString("&")
     val httpGet = new HttpGet(s"${url}?${query}")
     headers.foreach {
       httpGet.addHeader(_)
@@ -58,7 +61,7 @@ object RESTfulClient {
     HttpClientBuilder.create().build()
   }
 
-  private def headers = for (nameValue <- params("-h")) yield {
+  private def headers = for (nameValue <- params(Arg_Header_Key)) yield {
     def tokens = splitByEqual(nameValue)
     new BasicHeader(tokens(0), tokens(1))
   }
@@ -68,7 +71,7 @@ object RESTfulClient {
       java.util.Arrays.asList(scalaList.toArray: _*)
     }
 
-    def formParams = for (nameValue <- params("-d")) yield {
+    def formParams = for (nameValue <- params(Arg_Data_Key)) yield {
       def tokens = splitByEqual(nameValue)
       new BasicNameValuePair(tokens(0), tokens(1))
     }
@@ -88,7 +91,7 @@ object RESTfulClient {
       (paramName, if (index == -1) Nil else values(args(index + 1)))
     }
 
-    Map(nameValuePair("-d"), nameValuePair("-h"))
+    Map(nameValuePair(Arg_Data_Key), nameValuePair(Arg_Header_Key))
   }
 
 
