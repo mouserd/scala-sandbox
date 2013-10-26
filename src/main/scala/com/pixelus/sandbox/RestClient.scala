@@ -82,7 +82,7 @@ object RestClient {
   }
 
   def main(args: Array[String]) {
-    require(args.size >= 2, "should at least specify an action[get,post,delete] and url")
+    require(args.size >= 2, "should at least specify an action[get,post,delete,options] and url")
     val command = args.head
     params = parseArgs(args)
     url = args.last

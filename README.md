@@ -54,7 +54,7 @@ sbt> stats
 The REST client is a simple client for transmitting RESTful calls to a locally running RESTful server.
 
 The RESTful server can be started by running <code>container:start</code> from SBT. You can then make
-GET/POST/DELETE requests to this server by running the REST client from SBT:
+GET/POST/DELETE/OPTIONS requests to this server by running the REST client from SBT:
 
 When executing the client, you can pass <code>-d</code> and/or <code>-h</code> argument that represents
 request parameters or headers respectively that should be sent by the client to the server.  You can send
@@ -71,6 +71,10 @@ sbt> run-main RestClient post -h Content-type=text/plain http://localhost:8081/
 * DELETE request:
 ```
 sbt> run-main RestClient delete http://localhost:8081/
+```
+* OPTIONS request:
+```
+sbt> run-main RestClient options -h Content-type=text/plain http://localhost:8081/
 ```
 
 If the server is setup correctly it should echo back a response that indicates:
