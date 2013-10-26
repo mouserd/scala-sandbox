@@ -8,12 +8,12 @@ object RESTfulClient {
   val Arg_Data_Key = "-d"
   val Arg_Header_Key = "-h"
 
-  var params: Map[String, List[String]] = _;
-  var url: String = _;
+  var params: Map[String, List[String]] = _
+  var url: String = _
 
-  def handleGetRequest = {
+  def handleGetRequest() {
     val query = params(Arg_Data_Key).mkString("&")
-    val httpGet = new HttpGet(s"${url}?${query}")
+    val httpGet = new HttpGet(s"$url?$query")
     headers.foreach {
       httpGet.addHeader(_)
     }
@@ -22,7 +22,7 @@ object RESTfulClient {
     println(responseBody)
   }
 
-  def handlePutRequest = {
+  def handlePutRequest() {
     val httpPut = new HttpPut(url)
     headers.foreach {
       httpPut.addHeader(_)
@@ -32,7 +32,7 @@ object RESTfulClient {
     println(responseBody)
   }
 
-  def handlePostRequest = {
+  def handlePostRequest() {
     val httpPost = new HttpPost(url)
     headers.foreach {
       httpPost.addHeader(_)
@@ -42,13 +42,13 @@ object RESTfulClient {
     println(responseBody)
   }
 
-  def handleDeleteRequest = {
+  def handleDeleteRequest() {
     val httpDelete = new HttpDelete(url)
     val response = createHttpClient.execute(httpDelete)
     println(response.getStatusLine)
   }
 
-  def handleOptionsRequest = {
+  def handleOptionsRequest() {
     val httpOptions = new HttpOptions(url)
     headers.foreach {
       httpOptions.addHeader(_)
@@ -102,11 +102,11 @@ object RESTfulClient {
     url = args.last
 
     command match {
-      case "get"     => handleGetRequest
-      case "put"     => handlePutRequest
-      case "post"    => handlePostRequest
-      case "delete"  => handleDeleteRequest
-      case "options" => handleOptionsRequest
+      case "get"     => handleGetRequest()
+      case "put"     => handlePutRequest()
+      case "post"    => handlePostRequest()
+      case "delete"  => handleDeleteRequest()
+      case "options" => handleOptionsRequest()
     }
   }
 }
