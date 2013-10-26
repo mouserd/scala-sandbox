@@ -1,6 +1,6 @@
 import org.apache.http.client.entity.UrlEncodedFormEntity
 import org.apache.http.client.HttpClient
-import org.apache.http.client.methods.{HttpOptions, HttpDelete, HttpPost, HttpGet}
+import org.apache.http.client.methods._
 import org.apache.http.impl.client.{BasicResponseHandler, HttpClientBuilder}
 import org.apache.http.message.{BasicNameValuePair, BasicHeader}
 
@@ -81,14 +81,25 @@ object RestClient {
     println(httpOptions.getAllowedMethods(response))
   }
 
+  def handlePutRequest = {
+    val httpPut = new HttpPut(url)
+    headers.foreach {
+      httpPut.addHeader(_)
+    }
+    httpPut.setEntity(formEntity)
+    val responseBody = createHttpClient.execute(httpPut, new BasicResponseHandler)
+    println(responseBody)
+  }
+
   def main(args: Array[String]) {
-    require(args.size >= 2, "should at least specify an action[get,post,delete,options] and url")
+    require(args.size >= 2, "should at least specify an action[get,put,post,delete,options] and url")
     val command = args.head
     params = parseArgs(args)
     url = args.last
 
     command match {
       case "get"    => handleGetRequest
+      case "put"    => handlePutRequest
       case "post"   => handlePostRequest
       case "delete" => handleDeleteRequest
       case "options"=> handleOptionsRequest
