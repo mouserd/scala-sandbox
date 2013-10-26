@@ -54,14 +54,21 @@ sbt> stats
 The REST client is a simple client for transmitting RESTful calls to a locally running RESTful server.
 
 The RESTful server can be started by running <code>container:start</code> from SBT. You can then make
-GET requests to this server by running the REST client from SBT:
+GET/POST requests to this server by running the REST client from SBT:
+
+When executing the client, you can pass <code>-d</code> and/or <code>-h</code> argument that represents
+request parameters or headers respectively that should be sent by the client to the server.  You can send
+multiple parameters or headers by comma-separating them.
+
 * GET request:
 ```
 sbt> run-main RestClient get -h Content-type=text -d refresh=true http://localhost:8081/
 ```
-The <code>-d</code> argument represents request parameters that should be sent by the client to the server
-(applicable to GET requests only).
-The <code>-h</code> argument represents headers that should be sent by the client to the server.
+* POST request:
+```
+sbt> run-main RestClient post -h Content-type=text/plain http://localhost:8081/
+```
+
 
 If the server is setup correctly it should echo back a response that indicates:
  1. the method called
