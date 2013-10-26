@@ -1,4 +1,5 @@
 import org.apache.http.client.entity.UrlEncodedFormEntity
+import org.apache.http.client.HttpClient
 import org.apache.http.client.methods.{HttpDelete, HttpPost, HttpGet}
 import org.apache.http.impl.client.{BasicResponseHandler, HttpClientBuilder}
 import org.apache.http.message.{BasicNameValuePair, BasicHeader}
@@ -40,6 +41,10 @@ object RestClient {
     formEntity
   }
 
+  private def createHttpClient: HttpClient = {
+    HttpClientBuilder.create().build()
+  }
+
   def handleGetRequest = {
     val query = params("-d").mkString("&")
     val httpGet = new HttpGet(s"${url}?${query}")
@@ -47,7 +52,7 @@ object RestClient {
       httpGet.addHeader(_)
     }
 
-    val responseBody = HttpClientBuilder.create().build().execute(httpGet, new BasicResponseHandler())
+    val responseBody = createHttpClient.execute(httpGet, new BasicResponseHandler())
     println(responseBody)
   }
 
@@ -57,13 +62,13 @@ object RestClient {
       httpPost.addHeader(_)
     }
     httpPost.setEntity(formEntity)
-    val responseBody = HttpClientBuilder.create().build().execute(httpPost, new BasicResponseHandler())
+    val responseBody = createHttpClient.execute(httpPost, new BasicResponseHandler())
     println(responseBody)
   }
 
   def handleDeleteRequest = {
     val httpDelete = new HttpDelete(url);
-    val responseBody = HttpClientBuilder.create().build().execute(httpDelete, new BasicResponseHandler)
+    val responseBody = createHttpClient.execute(httpDelete, new BasicResponseHandler)
     println(responseBody)
   }
 
