@@ -1,6 +1,6 @@
 package com.pixelus.sandbox.db
 
-import com.mongodb.{MongoClient => Mongo}
+import com.mongodb.{MongoClient => Mongo}   // import and remap!
 
 class MongoClient(val host:String, val port:Int) {
 
@@ -12,7 +12,7 @@ class MongoClient(val host:String, val port:Int) {
   def this(host:String) = this(host, 27017)
 
   def version = driver.getVersion
-  def dropDB(name:String): Unit = driver.dropDatabase(name)
-  def createDB(name:String) = DBFactory(driver.getDB(name))
-  def db(name:String) = DBFactory(driver.getDB(name))
+  def dropDB(name:String) { driver.dropDatabase(name) }
+  def createDB(name:String) = DB(driver.getDB(name))
+  def db(name:String) = DB(driver.getDB(name))
 }
