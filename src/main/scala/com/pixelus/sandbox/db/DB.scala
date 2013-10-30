@@ -12,6 +12,12 @@ import collection.convert.Wrappers.JSetWrapper
  * Only companion objects can access this private class.
  */
 class DB private(val driver: MongoDB) {
+
+  private def collection(name:String) = driver.getCollection(name)
+  private def readOnlyCollection(name:String) = new DBCollection(collection(name))
+  private def administrableCollection(name:String) = new DBCollection(collection(name)) with Administrable
+  private def updatableCollection(name:String) = new DBCollection(collection(name)) with Updatable
+
   def collectionNames: mutable.Set[String] = for (name <- new JSetWrapper(driver.getCollectionNames())) yield name
 }
 
