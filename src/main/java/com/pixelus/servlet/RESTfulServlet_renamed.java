@@ -11,7 +11,7 @@ import java.util.Enumeration;
 /*
 * @author David Mouser
 */
-public class RESTfulServlet
+public class RESTfulServlet_renamed
     extends HttpServlet {
 
   @Override
