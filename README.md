@@ -50,6 +50,16 @@ sbt> scalastyle-generate-config
 sbt> stats
 ```
 
+#### Testing
+* Run unit tests
+```
+sbt> test
+```
+* Run integration tests
+```
+sbt> it:test
+```
+
 #### RESTful Client
 The RESTful client is a simple client for transmitting RESTful calls to a locally running RESTful server.
 
