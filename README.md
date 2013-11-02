@@ -46,16 +46,19 @@ sbt> scalastyle-generate-config
 
 ##### sbt-stats - [https://github.com/orrsella/sbt-stats](https://github.com/orrsella/sbt-stats)
 * View code stats
+
 ```
 sbt> stats
 ```
 
 #### Testing
 * Run unit tests
+
 ```
 sbt> test
 ```
 * Run integration tests
+
 ```
 sbt> it:test
 ```
