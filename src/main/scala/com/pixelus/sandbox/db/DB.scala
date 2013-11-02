@@ -14,9 +14,9 @@ import collection.convert.Wrappers.JSetWrapper
 class DB private(val driver: MongoDB) {
 
   private def collection(name:String) = driver.getCollection(name)
-  private def readOnlyCollection(name:String) = new DBCollection(collection(name))
-  private def administrableCollection(name:String) = new DBCollection(collection(name)) with Administrable
-  private def updatableCollection(name:String) = new DBCollection(collection(name)) with Updatable
+  def readOnlyCollection(name:String) = new DBCollection(collection(name))
+  def administrableCollection(name:String) = new DBCollection(collection(name)) with Administrable
+  def updatableCollection(name:String) = new DBCollection(collection(name)) with Updatable
 
   def collectionNames: mutable.Set[String] = for (name <- new JSetWrapper(driver.getCollectionNames())) yield name
 }
