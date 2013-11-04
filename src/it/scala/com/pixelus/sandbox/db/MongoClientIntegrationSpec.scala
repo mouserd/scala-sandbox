@@ -3,22 +3,30 @@ package com.pixelus.sandbox.db
 import com.mongodb.{DBObject, BasicDBObject}
 import org.scalatest._
 
-class MongoClientIntegrationSpec extends FunSuite with ShouldMatchers with BeforeAndAfter {
+class MongoClientIntegrationSpec
+    extends FunSuite
+            with ShouldMatchers
+            with BeforeAndAfter
+            with BeforeAndAfterAll {
 
   val CollectionName: String = "myCollection"
 
   var client: MongoClient = _
   var db: DB = _
 
-  before {
+  override def beforeAll() {
     client = new MongoClient()
     db = client.createDB("mydb")
+  }
 
-    def collection = db.updatableCollection(CollectionName)
-    collection += (createDBObject())
+  before {
   }
 
   after {
+    db.administrableCollection(CollectionName).drop();
+  }
+
+  override def afterAll() {
     client.dropDB("mydb")
   }
 
@@ -35,12 +43,16 @@ class MongoClientIntegrationSpec extends FunSuite with ShouldMatchers with Befor
   }
 
   test("#collectionNames should return valid collection names") {
+    db.updatableCollection(CollectionName) += createDBObject() // Need to create at least one item for the collection to exist.
 
     db.collectionNames should contain(CollectionName)
   }
 
   test("#getCount should return number of matching objects in collection") {
     val collection = db.updatableCollection(CollectionName)
+    collection += createDBObject()
+    collection.getCount(createDBObject()) should equal(1)
+
     collection += createDBObject()
     collection.getCount(createDBObject()) should equal(2)
   }
@@ -89,15 +101,16 @@ class MongoClientIntegrationSpec extends FunSuite with ShouldMatchers with Befor
     val dummyObject = createDBObject()
     val collection = db.updatableCollection(CollectionName)
 
-    collection.getCount(dummyObject) should equal(1)
+    collection.getCount(dummyObject) should equal(0)
     collection += createDBObject()
-    collection.getCount(dummyObject) should equal(2)
+    collection.getCount(dummyObject) should equal(1)
   }
 
   test("#removeOperator should remove object from updatable collection") {
 
     val deleteObject = createDBObject()
     val collection = db.updatableCollection(CollectionName)
+    collection += deleteObject
 
     collection.getCount(deleteObject) should equal(1)
     collection -= (deleteObject)
@@ -105,6 +118,7 @@ class MongoClientIntegrationSpec extends FunSuite with ShouldMatchers with Befor
   }
 
   test("#drop should drop collection from administrable collection") {
+    db.updatableCollection(CollectionName) += createDBObject() // Need to create at least one item for the collection to exist!
     val collection = db.administrableCollection(CollectionName)
 
     db.collectionNames should contain(CollectionName)
