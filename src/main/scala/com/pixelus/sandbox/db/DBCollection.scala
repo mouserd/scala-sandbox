@@ -26,3 +26,16 @@ trait Updatable extends ReadyOnly {
   def -=(doc: DBObject):Unit = underlying.remove(doc)
   def +=(doc: DBObject):Unit = underlying.save(doc)
 }
+
+trait Memoizer extends ReadyOnly {
+
+  val cache = Map[Int, DBObject]()
+
+  override def findOne() = {
+    cache.getOrElse(-1, super.findOne)
+  }
+
+  override def findOne(doc: DBObject) = {
+    cache.getOrElse(doc.hashCode, super.findOne(doc))
+  }
+}
