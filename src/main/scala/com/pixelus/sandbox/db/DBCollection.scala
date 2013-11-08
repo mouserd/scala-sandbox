@@ -1,9 +1,9 @@
 package com.pixelus.sandbox.db
 
-import com.mongodb.{DBCollection => MongoDBCollection, DBObject}
+import com.mongodb.{DBCollection => MongoDBCollection, DBCursor, DBObject}
 
 class DBCollection(override val underlying:MongoDBCollection)
-  extends ReadyOnly {}
+  extends Memoizer {}
 
 trait ReadyOnly {
 
@@ -11,7 +11,20 @@ trait ReadyOnly {
 
   def name = underlying.getName
   def fullName = underlying.getFullName
-  def find(doc: DBObject) = underlying.find(doc)
+  def find(doc: DBObject): DBCursor = underlying.find(doc)
+
+  def find(query: Query): DBCursor = {
+    def applyOptions(cursor:DBCursor, option: QueryOption): DBCursor = {
+      option match {
+        case Skip(skip, next) => applyOptions(cursor.skip(skip), next)
+        case Sort(sorting, next) => applyOptions(cursor.sort(sorting), next)
+        case Limit(limit, next) => applyOptions(cursor.limit(limit), next)
+        case NoOption => cursor
+      }
+    }
+    applyOptions(find(query.q), query.option)
+  }
+
   def findOne(doc: DBObject) = underlying.findOne(doc)
   def findOne = underlying.findOne
   def getCount(doc: DBObject) = underlying.getCount

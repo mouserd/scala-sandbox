@@ -73,6 +73,18 @@ class MongoClientIntegrationSpec
     collection.find(createDBObject(Map("name" -> "commonName"))).size() should equal(2)
   }
 
+  test("#find with query limit should find any objects that match but limit results to 3 of 5") {
+    val collection = db.updatableCollection(CollectionName)
+    collection += createDBObject(Map("id" -> "1", "name" -> "commonName"))
+    collection += createDBObject(Map("id" -> "2", "name" -> "commonName"))
+    collection += createDBObject(Map("id" -> "3", "name" -> "commonName"))
+    collection += createDBObject(Map("id" -> "4", "name" -> "commonName"))
+    collection += createDBObject(Map("id" -> "5", "name" -> "commonName"))
+
+    val query = Query(createDBObject(Map("name" -> "commonName"))).limit(3);
+    collection.find(query).size() should equal(3)
+  }
+
   test("#find should not find any objects that match query") {
     val collection = db.updatableCollection(CollectionName)
     collection += createDBObject(Map("id" -> "1", "name" -> "commonName"))
