@@ -23,7 +23,7 @@ class MongoClientIntegrationSpec
   }
 
   after {
-    db.administrableCollection(CollectionName).drop();
+    db.administrableCollection(CollectionName).drop()
   }
 
   override def afterAll() {
@@ -85,7 +85,7 @@ class MongoClientIntegrationSpec
     collection += createDBObject(Map("id" -> "4", "name" -> "commonName"))
     collection += createDBObject(Map("id" -> "5", "name" -> "commonName"))
 
-    val query = Query(createDBObject(Map("name" -> "commonName"))).limit(3);
+    val query = Query(createDBObject(Map("name" -> "commonName"))).limit(3)
     collection.find(query) should have size (3)
   }
 
