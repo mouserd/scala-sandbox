@@ -34,7 +34,11 @@ class MongoClientIntegrationSpec
     createDBObject(Map("key" -> "value"))
   }
 
-  private def createDBObject(values: Map[String, String]): DBObject = {
+  private def createDBObject(key: String, value: String): DBObject = {
+    createDBObject(Map(key -> value))
+  }
+
+  private def createDBObject(values: Map[String, AnyRef]): DBObject = {
     val obj = new BasicDBObject()
     for ((key, value) <- values) {
       obj.put(key, value)
@@ -70,7 +74,7 @@ class MongoClientIntegrationSpec
     collection += createDBObject(Map("id" -> "1", "name" -> "commonName"))
     collection += createDBObject(Map("id" -> "2", "name" -> "commonName"))
 
-    collection.find(createDBObject(Map("name" -> "commonName"))).size() should equal(2)
+    collection.find(createDBObject(Map("name" -> "commonName"))) should have size(2)
   }
 
   test("#find with query limit should find any objects that match but limit results to 3 of 5") {
@@ -82,7 +86,7 @@ class MongoClientIntegrationSpec
     collection += createDBObject(Map("id" -> "5", "name" -> "commonName"))
 
     val query = Query(createDBObject(Map("name" -> "commonName"))).limit(3);
-    collection.find(query).size() should equal(3)
+    collection.find(query) should have size (3)
   }
 
   test("#find with a query skip should find all objects and skip the first 2") {
@@ -98,9 +102,30 @@ class MongoClientIntegrationSpec
 
     val query = Query(createDBObject(Map("name" -> "commonName"))).skip(2)
     val results = collection.find(query)
-    results.size() should equal(3)
+    results should have size (3)
     results.toArray should not contain(object1)
     results.toArray should not contain(object2)
+  }
+
+
+  test("#find with a query sort should find all objects and sort them by name") {
+    val collection = db.updatableCollection(CollectionName)
+
+    collection += createDBObject(Map("id" -> "1", "name" -> "b"))
+    collection += createDBObject(Map("id" -> "2", "name" -> "c"))
+    collection += createDBObject(Map("id" -> "3", "name" -> "d"))
+    collection += createDBObject(Map("id" -> "4", "name" -> "a"))
+    collection += createDBObject(Map("id" -> "5", "name" -> "1"))
+
+    val query = Query(createDBObject(Map("id" -> createDBObject("$gt", "0")))).sort(createDBObject(Map("name" -> "")))
+    val results = collection.find(query).toArray
+    results should have length (5)
+
+    results.get(0).get("id") should equal ("5")
+    results.get(1).get("id") should equal ("4")
+    results.get(2).get("id") should equal ("1")
+    results.get(3).get("id") should equal ("2")
+    results.get(4).get("id") should equal ("3")
   }
 
   test("#find should not find any objects that match query") {
@@ -108,7 +133,7 @@ class MongoClientIntegrationSpec
     collection += createDBObject(Map("id" -> "1", "name" -> "commonName"))
     collection += createDBObject(Map("id" -> "2", "name" -> "commonName"))
 
-    collection.find(createDBObject(Map("name" -> "uncommonName"))).size() should equal(0)
+    collection.find(createDBObject(Map("name" -> "uncommonName"))) should have size(0)
   }
 
   test("#findOne should find one object among many that match query") {
