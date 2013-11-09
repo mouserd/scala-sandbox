@@ -85,6 +85,24 @@ class MongoClientIntegrationSpec
     collection.find(query).size() should equal(3)
   }
 
+  test("#find with a query skip should find all objects and skip the first 2") {
+    val collection = db.updatableCollection(CollectionName)
+    val object1 = createDBObject(Map("id" -> "1", "name" -> "commonName"))
+    val object2 = createDBObject(Map("id" -> "2", "name" -> "commonName"))
+
+    collection += object1
+    collection += object2
+    collection += createDBObject(Map("id" -> "3", "name" -> "commonName"))
+    collection += createDBObject(Map("id" -> "4", "name" -> "commonName"))
+    collection += createDBObject(Map("id" -> "5", "name" -> "commonName"))
+
+    val query = Query(createDBObject(Map("name" -> "commonName"))).skip(2)
+    val results = collection.find(query)
+    results.size() should equal(3)
+    results.toArray should not contain(object1)
+    results.toArray should not contain(object2)
+  }
+
   test("#find should not find any objects that match query") {
     val collection = db.updatableCollection(CollectionName)
     collection += createDBObject(Map("id" -> "1", "name" -> "commonName"))
