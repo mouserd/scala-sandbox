@@ -11,7 +11,10 @@ class HelloWorldSpec extends BaseSpec {
     hello = new HelloWorld
   }
 
-  test("#sayHello should greet me by name") {
-    hello.sayHello("Dave") should be ("Hello Dave!")
+  describe("#sayHello") {
+
+    it("should greet me by name") {
+      hello.sayHello("Dave") should be ("Hello Dave!")
+    }
   }
 }
