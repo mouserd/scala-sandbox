@@ -1,12 +1,10 @@
 package com.pixelus.sandbox.db
 
 import com.mongodb.{DBObject, BasicDBObject}
-import org.scalatest._
-import com.pixelus.sandbox.BaseSpec
+import com.pixelus.sandbox.BaseIntegrationSpec
 
 class MongoClientIntegrationSpec
-    extends BaseSpec
-            with BeforeAndAfterAll {
+    extends BaseIntegrationSpec {
 
   val CollectionName: String = "myCollection"
 
@@ -87,7 +85,7 @@ class MongoClientIntegrationSpec
       collection += createDBObject(Map("id" -> "1", "name" -> "commonName"))
       collection += createDBObject(Map("id" -> "2", "name" -> "commonName"))
 
-      collection.find(createDBObject(Map("name" -> "commonName"))) should have size(2)
+      collection.find(createDBObject(Map("name" -> "commonName"))) should have size (2)
     }
 
     it("with query limit should find any objects that match but limit results to 3 of 5") {
@@ -116,8 +114,8 @@ class MongoClientIntegrationSpec
       val query = Query(createDBObject(Map("name" -> "commonName"))).skip(2)
       val results = collection.find(query)
       results should have size (3)
-      results.toArray should not contain(object1)
-      results.toArray should not contain(object2)
+      results.toArray should not contain (object1)
+      results.toArray should not contain (object2)
     }
 
     it("with a query sort should find all objects and sort them by name") {
@@ -133,11 +131,11 @@ class MongoClientIntegrationSpec
       val results = collection.find(query).toArray
       results should have length (5)
 
-      results.get(0).get("id") should equal ("5")
-      results.get(1).get("id") should equal ("4")
-      results.get(2).get("id") should equal ("1")
-      results.get(3).get("id") should equal ("2")
-      results.get(4).get("id") should equal ("3")
+      results.get(0).get("id") should equal("5")
+      results.get(1).get("id") should equal("4")
+      results.get(2).get("id") should equal("1")
+      results.get(3).get("id") should equal("2")
+      results.get(4).get("id") should equal("3")
     }
 
     it("should not find any objects that match query") {
@@ -145,7 +143,7 @@ class MongoClientIntegrationSpec
       collection += createDBObject(Map("id" -> "1", "name" -> "commonName"))
       collection += createDBObject(Map("id" -> "2", "name" -> "commonName"))
 
-      collection.find(createDBObject(Map("name" -> "uncommonName"))) should have size(0)
+      collection.find(createDBObject(Map("name" -> "uncommonName"))) should have size (0)
     }
   }
 
