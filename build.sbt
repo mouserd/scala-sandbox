@@ -1,3 +1,4 @@
+import com.pixelus._
 import GrowlKeys._
 
 name := "scala-sandbox"
@@ -31,4 +32,6 @@ org.scalastyle.sbt.ScalastylePlugin.Settings
 port in container.Configuration := 8081
 
 // Growl notification settings
-defaultImagePath in Growl := file("./project/growl/images/")
+groupFormatter in Growl := GrowlMessageFormatter.specFormatter
+
+aggregateFormatter in Growl := GrowlMessageFormatter.summaryFormatter
