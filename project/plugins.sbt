@@ -4,6 +4,8 @@ resolvers += "scct-github-repository" at "http://mtkopone.github.com/scct/maven-
 
 resolvers += "sonatype-releases" at "https://oss.sonatype.org/content/repositories/releases/"
 
+resolvers += Classpaths.sbtPluginReleases
+
 // IntelliJ project generation
 addSbtPlugin("com.github.mpeltonen" % "sbt-idea" % "1.5.2")
 
@@ -18,3 +20,6 @@ addSbtPlugin("org.scalastyle" %% "scalastyle-sbt-plugin" % "0.3.2")
 
 // Code stats
 addSbtPlugin("com.orrsella" % "sbt-stats" % "1.0.5")
+
+// Growl Notify
+addSbtPlugin("me.lessis" % "sbt-growl-plugin" % "0.1.3")
