@@ -3,7 +3,7 @@ package com.pixelus.sandbox.functions
 import org.scalatest._
 import com.pixelus.sandbox.BaseSpec
 
-class SampleFunctionsSpec extends BaseSpec with ShouldMatchers {
+class SampleFunctionsSpec extends BaseSpec {
 
   describe("#addOne") {
 
