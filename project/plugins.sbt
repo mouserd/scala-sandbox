@@ -13,7 +13,7 @@ addSbtPlugin("com.github.mpeltonen" % "sbt-idea" % "1.5.2")
 addSbtPlugin("com.earldouglas" % "xsbt-web-plugin" % "0.4.2")
 
 // Code coverage
-addSbtPlugin("reaktor" % "sbt-scct" % "0.2-SNAPSHOT")
+addSbtPlugin("com.github.scct" % "sbt-scct" % "0.2.1")
 
 // Scala style
 addSbtPlugin("org.scalastyle" %% "scalastyle-sbt-plugin" % "0.3.2")

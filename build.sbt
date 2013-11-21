@@ -23,7 +23,8 @@ classpathTypes ~= (_ + "orbit")
 
 seq(webSettings :_*)
 
-seq(ScctPlugin.instrumentSettings : _*)
+// Code coverage settings
+ScctPlugin.instrumentSettings
 
 // ScalaStyle settings
 org.scalastyle.sbt.ScalastylePlugin.Settings
