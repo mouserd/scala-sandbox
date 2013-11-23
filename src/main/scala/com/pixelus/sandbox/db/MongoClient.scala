@@ -1,6 +1,8 @@
 package com.pixelus.sandbox.db
 
-import com.mongodb.{MongoClient => Mongo}   // import and remap!
+import com.mongodb.{MongoClient => Mongo, MongoException}
+
+// import and remap!
 
 class MongoClient(val host:String, val port:Int) {
 
@@ -15,4 +17,13 @@ class MongoClient(val host:String, val port:Int) {
   def dropDB(name:String) { driver.dropDatabase(name) }
   def createDB(name:String) = DB(driver.getDB(name))
   def db(name:String) = DB(driver.getDB(name))
+  def isConnected: Boolean = {
+    try {
+      driver.getConnector().getDBPortPool(driver.getAddress()).get().ensureOpen();
+    } catch{
+      case e: Exception => return false
+    }
+
+    true
+  }
 }
