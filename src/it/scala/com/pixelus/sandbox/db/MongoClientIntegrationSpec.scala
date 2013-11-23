@@ -10,9 +10,17 @@ class MongoClientIntegrationSpec
 
   var client: MongoClient = _
   var db: DB = _
+  var isConnected: Boolean = _
 
   override def beforeAll() {
-    client = new MongoClient()
+    try {
+      client = new MongoClient()
+    } catch {
+      case _ : Exception =>
+    }
+
+    isConnected = client.isConnected;
+
     db = client.createDB("mydb")
   }
 
@@ -20,11 +28,11 @@ class MongoClientIntegrationSpec
   }
 
   after {
-    db.administrableCollection(CollectionName).drop()
+    if (isConnected) db.administrableCollection(CollectionName).drop()
   }
 
   override def afterAll() {
-    client.dropDB("mydb")
+    if (isConnected) client.dropDB("mydb")
   }
 
   private def createDBObject(): DBObject = {
@@ -43,9 +51,15 @@ class MongoClientIntegrationSpec
     obj
   }
 
+  def assumeDBConnected {
+    assume(isConnected, "Unable to connect to MongoDB (" + client.host +":" + client.port +")")
+  }
+
   describe("#collectionNames") {
 
     it("should return valid collection names") {
+      assumeDBConnected
+
       db.updatableCollection(CollectionName) += createDBObject() // Need to create at least one item for the collection to exist.
 
       db.collectionNames should contain(CollectionName)
@@ -55,6 +69,8 @@ class MongoClientIntegrationSpec
   describe("#getCount") {
 
     it("should return number of matching objects in collection") {
+      assumeDBConnected
+
       val collection = db.updatableCollection(CollectionName)
       collection += createDBObject()
       collection.getCount(createDBObject()) should equal(1)
@@ -67,6 +83,8 @@ class MongoClientIntegrationSpec
   describe("#name") {
 
     it("should get collection name") {
+      assumeDBConnected
+
       db.readOnlyCollection(CollectionName).name should equal("myCollection")
     }
   }
@@ -74,6 +92,8 @@ class MongoClientIntegrationSpec
   describe("#fullName") {
 
     it("should get collection full name") {
+      assumeDBConnected
+
       db.readOnlyCollection(CollectionName).fullName should equal("mydb.myCollection")
     }
   }
@@ -81,6 +101,8 @@ class MongoClientIntegrationSpec
   describe("#find") {
 
     it("should find multiple objects that match query") {
+      assumeDBConnected
+
       val collection = db.updatableCollection(CollectionName)
       collection += createDBObject(Map("id" -> "1", "name" -> "commonName"))
       collection += createDBObject(Map("id" -> "2", "name" -> "commonName"))
@@ -89,6 +111,8 @@ class MongoClientIntegrationSpec
     }
 
     it("with query limit should find any objects that match but limit results to 3 of 5") {
+      assumeDBConnected
+
       val collection = db.updatableCollection(CollectionName)
       collection += createDBObject(Map("id" -> "1", "name" -> "commonName"))
       collection += createDBObject(Map("id" -> "2", "name" -> "commonName"))
@@ -101,6 +125,8 @@ class MongoClientIntegrationSpec
     }
 
     it("with a query skip should find all objects and skip the first 2") {
+      assumeDBConnected
+
       val collection = db.updatableCollection(CollectionName)
       val object1 = createDBObject(Map("id" -> "1", "name" -> "commonName"))
       val object2 = createDBObject(Map("id" -> "2", "name" -> "commonName"))
@@ -119,6 +145,8 @@ class MongoClientIntegrationSpec
     }
 
     it("with a query sort should find all objects and sort them by name") {
+      assumeDBConnected
+
       val collection = db.updatableCollection(CollectionName)
 
       collection += createDBObject(Map("id" -> "1", "name" -> "b"))
@@ -139,6 +167,8 @@ class MongoClientIntegrationSpec
     }
 
     it("should not find any objects that match query") {
+      assumeDBConnected
+
       val collection = db.updatableCollection(CollectionName)
       collection += createDBObject(Map("id" -> "1", "name" -> "commonName"))
       collection += createDBObject(Map("id" -> "2", "name" -> "commonName"))
@@ -150,6 +180,8 @@ class MongoClientIntegrationSpec
   describe("#findOne") {
 
     it("should find one object among many that match query") {
+      assumeDBConnected
+
       val collection = db.updatableCollection(CollectionName)
       collection += createDBObject(Map("id" -> "1", "name" -> "commonName"))
       collection += createDBObject(Map("id" -> "2", "name" -> "commonName"))
@@ -158,6 +190,8 @@ class MongoClientIntegrationSpec
     }
 
     it("should find one object among many") {
+      assumeDBConnected
+
       val collection = db.updatableCollection(CollectionName)
       collection += createDBObject(Map("id" -> "1", "name" -> "commonName"))
       collection += createDBObject(Map("id" -> "2", "name" -> "commonName"))
@@ -169,6 +203,8 @@ class MongoClientIntegrationSpec
   describe("#appendOperator") {
 
     it("should add object to updatable collection") {
+      assumeDBConnected
+
       val dummyObject = createDBObject()
       val collection = db.updatableCollection(CollectionName)
 
@@ -181,6 +217,7 @@ class MongoClientIntegrationSpec
   describe("#removeOperator") {
 
     it("should remove object from updatable collection") {
+      assumeDBConnected
 
       val deleteObject = createDBObject()
       val collection = db.updatableCollection(CollectionName)
@@ -195,6 +232,8 @@ class MongoClientIntegrationSpec
   describe("#drop") {
 
     it("should drop collection from administrable collection") {
+      assumeDBConnected
+
       db.updatableCollection(CollectionName) += createDBObject() // Need to create at least one item for the collection to exist!
       val collection = db.administrableCollection(CollectionName)
 
