@@ -14,22 +14,22 @@ class ParameterizationSpec extends BaseSpec {
 
     it("should get correct position for List of Ints") {
       val list = List(1, 2, 3, 4, 5)
-      parameterization.position(list, 3).get should equal (2)
+      parameterization.position(list, 3).get should equal(2)
     }
 
     it("should get correct position for List of Strings") {
       val list = List("Mike", "Jack", "Phil", "Russ")
-      parameterization.position(list, "Jack").get should equal (1)
+      parameterization.position(list, "Jack").get should equal(1)
     }
 
     it("should get default position for object that doesn't exist in List but using getOrElse") {
       val list = List("Mike", "Jack", "Phil", "Russ")
-      parameterization.position(list, "Pedro").getOrElse(-1) should equal (-1)
+      parameterization.position(list, "Pedro").getOrElse(-1) should equal(-1)
     }
 
     it("should get Nil for object that doesn't exist in List") {
       val list = List("Mike", "Jack", "Phil", "Russ")
-      parameterization.position(list, "Fred") should equal (Nil)
+      parameterization.position(list, "Fred") should equal(Nil)
     }
 
     it("should throw exception using get on for object that doesn't exist in List") {

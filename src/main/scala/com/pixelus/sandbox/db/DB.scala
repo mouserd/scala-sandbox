@@ -4,6 +4,7 @@ import com.mongodb.{DB => MongoDB}
 import collection.mutable
 
 // import and remap!
+
 import collection.convert.Wrappers.JSetWrapper
 
 /**
@@ -13,10 +14,13 @@ import collection.convert.Wrappers.JSetWrapper
  */
 class DB private(val driver: MongoDB) {
 
-  private def collection(name:String) = driver.getCollection(name)
-  def readOnlyCollection(name:String) = new DBCollection(collection(name)) with Memoizer
-  def administrableCollection(name:String) = new DBCollection(collection(name)) with Administrable with Memoizer
-  def updatableCollection(name:String) = new DBCollection(collection(name)) with Updatable with Memoizer
+  private def collection(name: String) = driver.getCollection(name)
+
+  def readOnlyCollection(name: String) = new DBCollection(collection(name)) with Memoizer
+
+  def administrableCollection(name: String) = new DBCollection(collection(name)) with Administrable with Memoizer
+
+  def updatableCollection(name: String) = new DBCollection(collection(name)) with Updatable with Memoizer
 
   def collectionNames: mutable.Set[String] = for (name <- new JSetWrapper(driver.getCollectionNames())) yield name
 }
