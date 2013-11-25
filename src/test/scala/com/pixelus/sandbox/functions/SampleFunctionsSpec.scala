@@ -13,6 +13,24 @@ class SampleFunctionsSpec extends BaseSpec {
     it("should increment all items in a list when passed to map") {
       List(1, 2, 3).map(SampleFunctions.addOne) should equal(List(2, 3, 4))
     }
+
+    describe("#map") {
+
+      it("should increment all items in a list using recursion") {
+        val list = List(1, 2, 3)
+
+        SampleFunctions.map(list, SampleFunctions.addOne) should equal(List(2, 3, 4))
+      }
+    }
+
+    describe("#map1") {
+
+      it("should increment all items in a list using a for-comprehension") {
+        val list = List(1, 2, 3)
+
+        SampleFunctions.map1(list, SampleFunctions.addOne) should equal(List(2, 3, 4))
+      }
+    }
   }
 
   describe("#addOneWithNestedFunction") {
