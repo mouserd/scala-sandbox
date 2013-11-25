@@ -23,12 +23,12 @@ class SampleFunctionsSpec extends BaseSpec {
       }
     }
 
-    describe("#map1") {
+    describe("#mapWithForComprehension") {
 
       it("should increment all items in a list using a for-comprehension") {
         val list = List(1, 2, 3)
 
-        SampleFunctions.map1(list, SampleFunctions.addOne) should equal(List(2, 3, 4))
+        SampleFunctions.mapWithForComprehension(list, SampleFunctions.addOne) should equal(List(2, 3, 4))
       }
     }
   }

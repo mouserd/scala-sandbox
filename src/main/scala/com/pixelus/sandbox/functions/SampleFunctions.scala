@@ -16,7 +16,7 @@ object SampleFunctions {
     }
   }
 
-  def map1[A, B](xs: List[A],f: A => B): List[B] = for (x <- xs) yield f(x)
+  def mapWithForComprehension[A, B](xs: List[A],f: A => B): List[B] = for (x <- xs) yield f(x)
 
   // TODO create a partial function
 
