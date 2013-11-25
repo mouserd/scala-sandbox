@@ -9,12 +9,16 @@ object SampleFunctions {
     ++(num)
   }
 
-  def map[A, B](xs: List[A], f:A => B): List[B] = {
+  def mapWithMatchers[A, B](xs: List[A], f:A => B): List[B] = {
     xs match {
       case List() => Nil
-      case head :: tail => f(head) :: map(tail, f)
+      case head :: tail => f(head) :: mapWithMatchers(tail, f)
     }
   }
 
   def map1[A, B](xs: List[A],f: A => B): List[B] = for (x <- xs) yield f(x)
+
+  // TODO create a partial function
+
+  // TODO create a curried function
 }

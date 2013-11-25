@@ -14,12 +14,12 @@ class SampleFunctionsSpec extends BaseSpec {
       List(1, 2, 3).map(SampleFunctions.addOne) should equal(List(2, 3, 4))
     }
 
-    describe("#map") {
+    describe("#mapWithMatchers") {
 
       it("should increment all items in a list using recursion") {
         val list = List(1, 2, 3)
 
-        SampleFunctions.map(list, SampleFunctions.addOne) should equal(List(2, 3, 4))
+        SampleFunctions.mapWithMatchers(list, SampleFunctions.addOne) should equal(List(2, 3, 4))
       }
     }
 
