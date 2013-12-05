@@ -1,6 +1,6 @@
 package com.pixelus.sandbox.functions
 
-object SampleFunctions {
+class SampleFunctions {
 
   def addOne(num: Int): Int = num + 1
 
@@ -18,7 +18,25 @@ object SampleFunctions {
 
   def mapWithForComprehension[A, B](xs: List[A],f: A => B): List[B] = for (x <- xs) yield f(x)
 
-  // TODO create a partial function
+  def multiplierForPartialFunction(a:Int, b:Int): Int = {
+    a * b
+  }
 
-  // TODO create a curried function
+  val doublerPartial = multiplierForPartialFunction(2, _:Int)
+
+  def multiplierForCurriedFunction(a:Int)(b:Int): Int = {
+    a * b
+  }
+
+  val doublerCurried = multiplierForCurriedFunction(2) _
+
+  def capitalizeVarArgs(strings: String*) = {
+    strings.map { string =>
+      string.toUpperCase
+    }
+  }
+}
+
+object SampleFunctions {
+  def apply() = new SampleFunctions
 }
